@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import requests
 
+#chrome is disabled due to unstable driver versiob issue.
+
 # Welcome Banner of the script.
 
 script_logo = '''
@@ -34,11 +36,11 @@ url = input("Enter the URL of the website you want to scrawl >> ")
 options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 
-chrome_browser = webdriver.Chrome(options=options)
+#chrome_browser = webdriver.Chrome(options=options)
 firefox_browser = webdriver.Firefox()
 
 # GET request to the URL
-chrome_browser.get(url)
+#chrome_browser.get(url)
 firefox_browser.get(url)
 response = requests.get(url)
 
@@ -49,7 +51,8 @@ soup = BeautifulSoup(response.content, 'html.parser')
 
 # Check if the website is dynamic or static
 try:
-    chrome_browser.find_element(By.XPATH,'xpath')
+    #chrome_browser.find_element(By.XPATH,'xpath')
+    firefox_browser.find_element(By.XPATH,'xpath')
     is_dynamic = True
 except NoSuchElementException:
     is_dynamic = False
@@ -58,13 +61,15 @@ except NoSuchElementException:
 if is_dynamic:
     # Used Selenium to interact with the page and find all available of the links
     links = []
-    for link in chrome_browser.find_elements(By.TAG_NAME,'a'):
-        links.append(link.get_attribute('href'))
+    #for link in chrome_browser.find_elements(By.TAG_NAME,'a'):
+        #links.append(link.get_attribute('href'))
+    for link in firefox_browser.find_elements(By.TAG_NAME,'a'):
+        links.append(link.get_attribute('href'))    
 
     # Scrape data from each page using both browsers
     data = []
     for link in links:
-        chrome_browser.get(link)
+        #chrome_browser.get(link)
         firefox_browser.get(link)
         time.sleep(1)
 
@@ -111,7 +116,9 @@ with open('results.csv', 'w', newline='') as file:
 
 # Close the browser windows
 firefox_browser.quit()
-chrome_browser.quit()
+#chrome_browser.quit()
 time.sleep(1)
 print('\nScrawl successfully completed.\n')
+time.sleep(1)
+print('You can find the scrawled data in results.csv file.\n')
 
