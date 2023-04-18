@@ -3,3 +3,8 @@ selenium                4.8.3
 requests                2.28.2
 urllib3                 1.26.15
 beautifulsoup4          4.12.0
+
+refer this for installing available python-telegram-both
+https://anaconda.org/conda-forge/python-telegram-bot
+or 
+https://stackoverflow.com/questions/66236885/modulenotfounderror-no-module-named-telegram-after-pip-install

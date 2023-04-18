@@ -5,8 +5,13 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import requests
+from telegram.ext import (Updater, ContextTypes, ConversationHandler, MessageHandler)
+from esb import CURL, pass_link
 
-#chrome is disabled due to unstable driver versiob issue.
+
+
+
+#chrome is disabled due to unstable driver version issue.
 
 # Welcome Banner of the script.
 
@@ -19,14 +24,27 @@ script_logo = '''
 (|  '--.   '..`''.) (|  '--.   /_) |OO  )   
  |  .--'  .-._)   \  |  .--'   ||  |`-'|    
  |  `---. \       /  |  `---. (_'  '--'\    
-`------'  `-----'   `------'    `-----'   Scrawler v 0.01
+ `------'  `-----'   `------'    `-----'   Scrawler v 0.01
                                                   
 '''
 print(script_logo)
 print('Scwaler will help you scrape and crawl inside a target website.\n\n')
 time.sleep(1)
-# Ask the user for the URL of the website 
-url = input("Enter the URL of the website you want to scrawl >> ")
+# Ask the user for the URL of the website
+async def regular_choice(update: Updater, context: ContextTypes.DEFAULT_TYPE) -> str:
+   CURL = update.message.text
+   context.user_data["CURL"] = CURL
+try:
+  url = input(pass_link)
+  is_url = True
+except:
+  is_url = False
+
+if is_url:
+  url = input('Enter the URL you wish to scrawl >> ')
+else:
+  url = input('try something else')
+
 
 
 
@@ -34,7 +52,7 @@ url = input("Enter the URL of the website you want to scrawl >> ")
 
 
 options = webdriver.ChromeOptions()
-options.add_argument("--start-maximized")
+options.add_argument("--headless")
 
 #chrome_browser = webdriver.Chrome(options=options)
 firefox_browser = webdriver.Firefox()
